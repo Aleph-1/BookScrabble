@@ -6,7 +6,7 @@ public class DictionaryManager {
     HashMap<String,Dictionary> books;
     private static volatile DictionaryManager dm = null;
 
-    DictionaryManager(){
+    public DictionaryManager(){
         books = new HashMap<String, Dictionary>();
     }
 
