@@ -11,7 +11,7 @@ public class MyServer {
     private ClientHandler ch;
     private volatile boolean stop;
 
-    MyServer(int port, ClientHandler ch){
+    public MyServer(int port, ClientHandler ch){
         this.port = port;
         this.ch = ch;
         stop=false;

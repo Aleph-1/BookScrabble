@@ -57,7 +57,7 @@ public class Word {
         return vertical;
     }
 
-    Word(Tile[] tiles, int row, int col, boolean vert) {
+    public Word(Tile[] tiles, int row, int col, boolean vert) { //Made public during change
 
         if (tiles == null) {
             this.row = row;

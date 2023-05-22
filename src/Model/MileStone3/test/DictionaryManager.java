@@ -6,7 +6,7 @@ public class DictionaryManager {
     HashMap<String,Dictionary> books;
     private static volatile DictionaryManager dm = null;
 
-    DictionaryManager(){
+    public DictionaryManager(){
         books = new HashMap<String, Dictionary>();
     }
 
@@ -43,7 +43,6 @@ public class DictionaryManager {
     public int getSize(){
         return books.size();
     }
-
 
     public static DictionaryManager get(){
         if(dm == null)
