@@ -4,17 +4,20 @@ import Model.MileStone3.test.*;
 
 import java.io.*;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
 
 public class hostServer {
 
     MyServer server;
     DictionaryManager dm;
     BookScrabbleHandler bsh = new BookScrabbleHandler();
-    Board b =Board.getBoard();
+
+    HashSet<String> map;
+    Board b = Board.getBoard();
 
 
     class multClientHandler implements ClientHandler{
-
 
         private static Tile[] get(String s) {
             Tile[] ts=new Tile[s.length()];
