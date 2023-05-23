@@ -16,5 +16,9 @@ public class hostServer{
         server.start();
     }
 
+    public void closeConnection(){
+        server.close();
+    }
+
 
 }

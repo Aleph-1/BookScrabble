@@ -12,19 +12,17 @@ import java.util.Scanner;
 
 public class hostServerTest {
 
-
-
-
     public static void client1(int port) throws Exception{
         Socket server=new Socket("localhost", port);
         int numPlayer=0;
-        int x= 6;
-        int y= 2;
+        int x= 7;
+        int y= 7;
         char v_or_h='V';
         char q_or_c='Q';
 
 
-        String text =0+"\n["+x+","+y+","+v_or_h+"]"+"\n"+q_or_c+",mobydick.txt,Frank Herbert - Dune.txt,shakespeare.txt,"+"WHALE";
+        //Frank Herbert - Dune.txt,shakespeare.txt
+        String text =0+"\n["+x+","+y+","+v_or_h+"]"+"\n"+q_or_c+",mobydick.txt,"+"WHALE";
         PrintWriter outToServer=new PrintWriter(server.getOutputStream());
         Scanner in=new Scanner(server.getInputStream());
         outToServer.println(text);
@@ -56,6 +54,7 @@ public class hostServerTest {
         }
 
         hs.mch.close();
+        hs.closeConnection();
 
         return ok;
     }

@@ -86,7 +86,7 @@ public class multClientHandler implements ClientHandler { // -1 - Illegal comman
 
             if (state) {
                 out.println(1 + " " + b.tryPlaceWord(w)); // 1 means Approved word,b.tryPlaceWord returns the score.
-                out.print(2 + " " + "[" + w.getRow() + "," + w.getCol() + "," + w.isVertical() + "]"); // 2 means update board.
+                out.println(2 + " " + "[" + w.getRow() + "," + w.getCol() + "," + w.isVertical() + "]"); // 2 means update board.
                 out.println(System.lineSeparator());
                 connections++;
                 break;
@@ -95,6 +95,8 @@ public class multClientHandler implements ClientHandler { // -1 - Illegal comman
         }
 
         close();
+
+
     }
 
 
