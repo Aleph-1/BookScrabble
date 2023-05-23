@@ -367,7 +367,7 @@ private void placeOnBoard(Word w, Tile[][] gr){
 
 }
 
-int tryPlaceWord(Word w){
+public int tryPlaceWord(Word w){
 int score = 0;
 
     if(boardLegal(w)){

@@ -3,18 +3,19 @@ package Model;
 import Model.MileStone3.test.*;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 
 public class hostServer {
 
+    static int connections; //To check if someone is trying to give commands when it's not his turn.
     MyServer server;
     DictionaryManager dm;
     BookScrabbleHandler bsh = new BookScrabbleHandler();
-
-    HashSet<String> map;
-    Board b = Board.getBoard();
+    ArrayList<Integer> users = new ArrayList<>();
+    static Board b = Board.getBoard();
 
 
     class multClientHandler implements ClientHandler{
@@ -33,51 +34,82 @@ public class hostServer {
         PrintWriter out;
 
 
-        //The client will send the request with this convention - [x,y,V/H] Q/C[BOOK_NAMES separated by comma],
+        //The client will send the request with this convention - ID(0,1,2)
+        //[x,y,V/H]
+        // Q/C,[BOOK_NAMES separated by comma],WORD
         @Override
         public void handleClient(InputStream inFromclient, OutputStream outToClient) {
-
-            bsh.handleClient(inFromclient,outToClient);
 
             in = new BufferedReader(new InputStreamReader(inFromclient));
             out = new PrintWriter(outToClient, true);
 
+            String id;
             String boardDetails = null;
             String wordsDetails = null;
-            try {
-                boardDetails = in.readLine();
-                wordsDetails = in.readLine();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+
+            while (true) {
+                try {
+
+                    id = in.readLine();
+                    boardDetails = in.readLine();
+                    wordsDetails = in.readLine();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+
+                int intId = Integer.parseInt(id);
+
+                if (users.size() < 3)
+                    users.add(intId);
+                else {
+                    out.println("0 Too many players, please enter in a new session!"); // 0 means too many players
+                    break;
+                }
+                //[x,y,V/H]
+                String[] boardData = boardDetails.replace("[", "").replace("]", "").split(",");
+                String[] wordsData = wordsDetails.split(",");
+
+                Word w = new Word(get(wordsData[wordsData.length - 1]), Integer.parseInt(boardData[0]), Integer.parseInt(boardData[1]), boardData[2].compareTo("V") == 0);
+                boolean dictionaryLegal = false;
+
+                if (wordsData[0].equals("Q")) {
+                    dm = new DictionaryManager();
+                    dictionaryLegal = query(wordsData);
+                }
+
+                if (wordsData[0].equals("C")) {
+                    dm = new DictionaryManager();
+                    dictionaryLegal = challenge(wordsData); //Need to add bonus points accordingly
+                }
+
+
+                boolean state = b.boardLegal(w) && dictionaryLegal;
+
+
+                if (state) {
+                    out.println(1 + " " + b.tryPlaceWord(w)); // 1 means Approved word,b.tryPlaceWord returns the score.
+                    out.print(2 + " " + "["+w.getRow()+","+w.getCol()+","+w.isVertical()+"]"); // 2 means update board.
+                    out.println(System.lineSeparator());
+                    break;
+                }
+
+                else
+                    out.println("-1 Illegal Command Try again!"); //-1 means Illegal command
             }
 
-            //[x,y,V/H]
-            String[] boardData = boardDetails.replace("[","").replace("]","").split(",");
-            String[] wordsData = wordsDetails.split(",");
-
-            //Creating Tiles for the words from PTM1
-
-            Word w = new Word(get(wordsData[0]),Integer.parseInt(wordsData[1]),Integer.parseInt(wordsData[2]),wordsData[3].compareTo("V")==0);
-
-            if(wordsData[0].equals("Q")) {
-                dm = new DictionaryManager();
-                out.println(dm.query(Arrays.copyOfRange(wordsData, 1, wordsData.length)));
-                out.println(System.lineSeparator());
-            }
-
-            if(wordsData[0].equals("C")) {
-                dm = new DictionaryManager();
-                out.println(dm.challenge(Arrays.copyOfRange(wordsData, 1, wordsData.length)));
-                out.println(System.lineSeparator());
-            }
-
-
-
-
+            close();
         }
+
 
         @Override
         public void close() {
+
+            try{
+                in.close();
+                out.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
 
         }
     }
@@ -93,6 +125,8 @@ public class hostServer {
 
     public void startConnection(int port, ClientHandler ch){
         server = new MyServer(port,ch);
+        server.start();
+
     }
 
 
