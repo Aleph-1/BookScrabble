@@ -18,16 +18,16 @@ public class hostServerTest {
         int x= 7;
         int y= 7;
         char v_or_h='V';
-        char q_or_c='Q';
+        char q_or_c='C';
 
 
         //Frank Herbert - Dune.txt,shakespeare.txt
-        String text =0+"\n["+x+","+y+","+v_or_h+"]"+"\n"+q_or_c+",mobydick.txt,"+"WHALE";
+        String text =0+"\n["+x+","+y+","+v_or_h+"]"+"\n"+q_or_c+",bee.txt,"+"known";
         PrintWriter outToServer=new PrintWriter(server.getOutputStream());
         Scanner in=new Scanner(server.getInputStream());
         outToServer.println(text);
         outToServer.flush();
-        String response=in.next();
+        String response=in.nextLine();
         if(response==null)
             System.out.println("problem getting the right response from your server, cannot continue the test (-100)");
         if(response.charAt(0)!='1'||in.next().charAt(0)!='2'){
@@ -37,6 +37,10 @@ public class hostServerTest {
         outToServer.close();
         server.close();
     }
+
+
+
+
 
 
     public static boolean testServer() {
