@@ -3,8 +3,7 @@ package Model;
 import Model.MileStone3.test.*;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.*;
 
 public class multClientHandler implements ClientHandler { // -1 - Illegal command, 0 - Too many players, 1 - Accepted, 2 - Update Board according to provided string, 3 -Not your turn
 
@@ -12,6 +11,27 @@ public class multClientHandler implements ClientHandler { // -1 - Illegal comman
     static Board b = Board.getBoard();
     ArrayList<Integer> users = new ArrayList<>();
     DictionaryManager dm;
+
+    public boolean checkOutcomeWords(Word w,String... booksGiven){ //booksGiven - Q,Books,Word
+
+        boolean state = true;
+        ArrayList<String> books = new ArrayList<>();
+        Collections.addAll(books,booksGiven);
+        ArrayList<Word> listWords = b.getWords(w);
+        for(Word wo: listWords){
+            books.remove(books.size()-1);
+            books.add(wo.toStringW());
+            String[] str=new String[books.size()];
+            books.toArray(str);
+            if(Objects.equals(booksGiven[0], "Q")){
+                state = state && query(str);
+            }
+            else{
+                state = state && challenge(str);
+            }
+        }
+        return state;
+    }
 
 
     private static Tile[] get(String s) {
@@ -58,7 +78,7 @@ public class multClientHandler implements ClientHandler { // -1 - Illegal comman
             else if (users.get(connections % 3) != intId) {
                 out.println("3 Not your turn!"); //Code 3 means not your turn
                 continue;
-            } else {
+            } else if(intId>3){
                 out.println("0 Too many players, please enter in a new session!"); // 0 means too many players
                 break;
             }
@@ -70,15 +90,9 @@ public class multClientHandler implements ClientHandler { // -1 - Illegal comman
             Word w = new Word(get(wordsData[wordsData.length - 1]), Integer.parseInt(boardData[0]), Integer.parseInt(boardData[1]), boardData[2].compareTo("V") == 0);
             boolean dictionaryLegal = false;
 
-            if (wordsData[0].equals("Q")) {
-                dm = new DictionaryManager();
-                dictionaryLegal = query(wordsData);
-            }
+            dm = new DictionaryManager();
+            dictionaryLegal = checkOutcomeWords(w,wordsData);
 
-            if (wordsData[0].equals("C")) {
-                dm = new DictionaryManager();
-                dictionaryLegal = challenge(wordsData); //Need to add bonus points accordingly
-            }
 
 
             boolean state = b.boardLegal(w) && dictionaryLegal;

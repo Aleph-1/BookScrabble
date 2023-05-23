@@ -122,7 +122,7 @@ private Word horizontalWord(Word w, Tile[][] tempGrid,ArrayList<Tile> word){
         }
         return makeWord(word,finalRow,w.col,w.vertical);
     }
-private ArrayList<Word> getWords(Word w) {
+public ArrayList<Word> getWords(Word w) {
 
     Tile[][] tempGrid = grid.clone();
     placeOnBoard(w, tempGrid);
