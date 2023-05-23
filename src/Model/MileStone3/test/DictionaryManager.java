@@ -44,7 +44,6 @@ public class DictionaryManager {
         return books.size();
     }
 
-
     public static DictionaryManager get(){
         if(dm == null)
             dm = new DictionaryManager();
