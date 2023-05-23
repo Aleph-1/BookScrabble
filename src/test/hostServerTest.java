@@ -15,7 +15,14 @@ public class hostServerTest {
 
     public static void client1(int port) throws Exception{
         Socket server=new Socket("localhost", port);
-        String text = "GORILLA";
+        int numPlayer=0;
+        int x= 6;
+        int y= 2;
+        char v_or_h='V';
+        char q_or_c='Q';
+
+
+        String text =0+"\n["+x+","+y+","+v_or_h+"]"+"\n"+q_or_c+",mobydick.txt,Frank Herbert - Dune.txt,shakespeare.txt,"+"WHALE";
         PrintWriter outToServer=new PrintWriter(server.getOutputStream());
         Scanner in=new Scanner(server.getInputStream());
         outToServer.println(text);
@@ -23,8 +30,10 @@ public class hostServerTest {
         String response=in.next();
         if(response==null)
             System.out.println("problem getting the right response from your server, cannot continue the test (-100)");
+        if(response.charAt(0)!='1'||in.next().charAt(0)!='2'){
+            System.out.println("Wrong, (-100)");
+        }
         in.close();
-        outToServer.println(text);
         outToServer.close();
         server.close();
     }
@@ -34,7 +43,7 @@ public class hostServerTest {
         boolean ok=true;
         Random r=new Random();
         int port=6000+r.nextInt(1000);
-        MyServer s=new MyServer(port, new hostServer.mult );
+        MyServer s=new MyServer(port, new hostServer);
         int c = Thread.activeCount();
         s.start(); // runs in the background
         try {
