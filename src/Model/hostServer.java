@@ -18,7 +18,7 @@ public class hostServer {
     static Board b = Board.getBoard();
 
 
-    class multClientHandler implements ClientHandler{
+    class multClientHandler implements ClientHandler{ // -1 - Illegal command, 0 - Too many players, 1 - Accepted, 2 - Update Board according to provided string, 3 -Not your turn
 
         private static Tile[] get(String s) {
             Tile[] ts=new Tile[s.length()];
@@ -48,8 +48,9 @@ public class hostServer {
             String wordsDetails = null;
 
             while (true) {
-                try {
 
+                //Get data from client.
+                try {
                     id = in.readLine();
                     boardDetails = in.readLine();
                     wordsDetails = in.readLine();
@@ -61,10 +62,16 @@ public class hostServer {
 
                 if (users.size() < 3)
                     users.add(intId);
-                else {
+                else if(users.get(connections%3) != intId) {
+                    out.println("3 Not your turn!"); //Code 3 means not your turn
+                    continue;
+                }
+
+                else{
                     out.println("0 Too many players, please enter in a new session!"); // 0 means too many players
                     break;
                 }
+
                 //[x,y,V/H]
                 String[] boardData = boardDetails.replace("[", "").replace("]", "").split(",");
                 String[] wordsData = wordsDetails.split(",");
@@ -90,6 +97,7 @@ public class hostServer {
                     out.println(1 + " " + b.tryPlaceWord(w)); // 1 means Approved word,b.tryPlaceWord returns the score.
                     out.print(2 + " " + "["+w.getRow()+","+w.getCol()+","+w.isVertical()+"]"); // 2 means update board.
                     out.println(System.lineSeparator());
+                    connections++;
                     break;
                 }
 
@@ -123,8 +131,8 @@ public class hostServer {
         return dm.challenge(args);
     }
 
-    public void startConnection(int port, ClientHandler ch){
-        server = new MyServer(port,ch);
+    public void startConnection(int port){
+        server = new MyServer(port,new multClientHandler());
         server.start();
 
     }
