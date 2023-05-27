@@ -7,7 +7,7 @@ import java.net.Socket;
 import java.util.Random;
 import java.util.Scanner;
 
-public class multClientHandlerTest {
+public class modelTest {
 
 
     public static String text(int id,int x, int y, char v_or_h,char q_or_c,String word){
