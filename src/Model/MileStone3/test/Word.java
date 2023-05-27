@@ -76,6 +76,17 @@ public class Word {
 
         }
     }
+    public String toStringW(){
+        StringBuilder sb = new StringBuilder();
+
+        for(int i = 0; i < this.tiles.length; i++){
+            if(this.tiles[i] != null)
+                sb.append(this.tiles[i].letter);
+            else
+                sb.append("_");
+        }
+        return sb.toString();
+    }
 
 	
 }
