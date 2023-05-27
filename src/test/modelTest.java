@@ -25,7 +25,7 @@ public class modelTest {
         outToServer.flush();
         String response=in.next();
         if(response==null)
-            System.out.println("problem getting the right response from your server, cannot continue the test (-100)");
+            System.out.println("problem getting the right response from your server, cannot continue the test (-12.5)");
 
         if(response.compareTo("1") == 0)
             System.out.println(response + in.nextLine() + " " + in.nextLine());
@@ -47,7 +47,7 @@ public class modelTest {
         outToServer.flush();
         String response=in.next();
         if(response==null)
-            System.out.println("problem getting the right response from your server, cannot continue the test (-100)");
+            System.out.println("problem getting the right response from your server, cannot continue the test (-12.5)");
         if(response.compareTo("1") == 0)
             System.out.println(response + in.nextLine() + " " + in.nextLine());
         else
@@ -68,7 +68,7 @@ public class modelTest {
         outToServer.flush();
         String response=in.next();
         if(response==null)
-            System.out.println("problem getting the right response from your server, cannot continue the test (-100)");
+            System.out.println("problem getting the right response from your server, cannot continue the test (-12.5)");
         if(response.compareTo("1") == 0)
             System.out.println(response + in.nextLine() + " " + in.nextLine());
         else
@@ -88,7 +88,7 @@ public class modelTest {
         outToServer.flush();
         String response=in.next();
         if(response==null)
-            System.out.println("problem getting the right response from your server, cannot continue the test (-100)");
+            System.out.println("problem getting the right response from your server, cannot continue the test (-12.5)");
         if(response.compareTo("1") == 0)
             System.out.println(response + in.nextLine() + " " + in.nextLine());
         else
@@ -109,7 +109,7 @@ public class modelTest {
         outToServer.flush();
         String response=in.next();
         if(response==null)
-            System.out.println("problem getting the right response from your server, cannot continue the test (-100)");
+            System.out.println("problem getting the right response from your server, cannot continue the test (-12.5)");
         if(response.compareTo("1") == 0)
             System.out.println(response + in.nextLine() + " " + in.nextLine());
         else
@@ -131,14 +131,15 @@ public class modelTest {
 
 
         //Frank Herbert - Dune.txt,shakespeare.txt
-        String text =numPlayer+"\n["+x+","+y+","+v_or_h+"]"+"\n"+q_or_c+",bee.txt,"+"HIJACKING";
+
+        String text= text(0,7,1,'H','Q',"HIJACKING");
         PrintWriter outToServer=new PrintWriter(server.getOutputStream());
         Scanner in=new Scanner(server.getInputStream());
         outToServer.println(text);
         outToServer.flush();
         String response=in.next();
         if(response==null)
-            System.out.println("problem getting the right response from your server, cannot continue the test (-100)");
+            System.out.println("problem getting the right response from your server, cannot continue the test (-12.5)");
         if(response.compareTo("1") == 0)
             System.out.println(response + in.nextLine() + " " + in.nextLine());
         else
@@ -158,14 +159,15 @@ public class modelTest {
 
 
         //Frank Herbert - Dune.txt,shakespeare.txt
-        String text =numPlayer+"\n["+x+","+y+","+v_or_h+"]"+"\n"+q_or_c+",bee.txt,"+"DO_";
+        String text= text(2,5,9,'V','Q',"DO_");
+
         PrintWriter outToServer=new PrintWriter(server.getOutputStream());
         Scanner in=new Scanner(server.getInputStream());
         outToServer.println(text);
         outToServer.flush();
         String response=in.next();
         if(response==null)
-            System.out.println("problem getting the right response from your server, cannot continue the test (-100)");
+            System.out.println("problem getting the right response from your server, cannot continue the test (-12.5)");
         if(response.compareTo("1") == 0)
             System.out.println(response + in.nextLine() + " " + in.nextLine());
         else
@@ -185,14 +187,14 @@ public class modelTest {
 
 
         //Frank Herbert - Dune.txt,shakespeare.txt
-        String text =numPlayer+"\n["+x+","+y+","+v_or_h+"]"+"\n"+q_or_c+",bee.txt,"+"DO_";
+        String text= text(0,5,9,'V','Q',"DO_");
         PrintWriter outToServer=new PrintWriter(server.getOutputStream());
         Scanner in=new Scanner(server.getInputStream());
         outToServer.println(text);
         outToServer.flush();
         String response=in.next();
         if(response==null)
-            System.out.println("problem getting the right response from your server, cannot continue the test (-100)");
+            System.out.println("problem getting the right response from your server, cannot continue the test (-12.5)");
         if(response.compareTo("1") == 0)
             System.out.println(response + in.nextLine() + " " + in.nextLine());
         else
@@ -243,8 +245,6 @@ public class modelTest {
         if(testServer()){
             System.out.println("done");
         }
-
-
 
     }
 
