@@ -80,7 +80,10 @@ public class Word {
         StringBuilder sb = new StringBuilder();
 
         for(int i = 0; i < this.tiles.length; i++){
-            sb.append(this.tiles[i].letter);
+            if(this.tiles[i] != null)
+                sb.append(this.tiles[i].letter);
+            else
+                sb.append("_");
         }
         return sb.toString();
     }
