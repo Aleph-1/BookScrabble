@@ -27,12 +27,15 @@ public class hostServerTest {
         Scanner in=new Scanner(server.getInputStream());
         outToServer.println(text);
         outToServer.flush();
-        String response=in.nextLine();
+        String response=in.next();
         if(response==null)
             System.out.println("problem getting the right response from your server, cannot continue the test (-100)");
-        if(response.charAt(0)!='1'||in.next().charAt(0)!='2'){
-            System.out.println("Wrong client 1, (-33)");
-        }
+
+        if(response.compareTo("1") == 0)
+            System.out.println(response + in.nextLine() + " " + in.nextLine());
+        else
+            System.out.println(response + in.nextLine());
+
         in.close();
         outToServer.close();
         server.close();
@@ -46,12 +49,13 @@ public class hostServerTest {
         Scanner in=new Scanner(server.getInputStream());
         outToServer.println(text);
         outToServer.flush();
-        String response=in.nextLine();
+        String response=in.next();
         if(response==null)
             System.out.println("problem getting the right response from your server, cannot continue the test (-100)");
-        if(response.charAt(0)!='1'||in.next().charAt(0)!='2'){
-            System.out.println("Wrong client 2, (-33)");
-        }
+        if(response.compareTo("1") == 0)
+            System.out.println(response + in.nextLine() + " " + in.nextLine());
+        else
+            System.out.println(response + in.nextLine());
         in.close();
         outToServer.close();
         server.close();
@@ -66,12 +70,13 @@ public class hostServerTest {
         Scanner in=new Scanner(server.getInputStream());
         outToServer.println(text);
         outToServer.flush();
-        String response=in.nextLine();
+        String response=in.next();
         if(response==null)
             System.out.println("problem getting the right response from your server, cannot continue the test (-100)");
-        if(response.charAt(0)!='1'||in.next().charAt(0)!='2'){
-            System.out.println("Wrong client 3, (-33)");
-        }
+        if(response.compareTo("1") == 0)
+            System.out.println(response + in.nextLine() + " " + in.nextLine());
+        else
+            System.out.println(response + in.nextLine());
         in.close();
         outToServer.close();
         server.close();
@@ -80,22 +85,78 @@ public class hostServerTest {
         Socket server=new Socket("localhost", port);
 
         //Frank Herbert - Dune.txt,shakespeare.txt
-        String text = text(0,8,7,'H','C',"_OB");
+        String text = text(3,8,7,'H','C',"_OB");
         PrintWriter outToServer=new PrintWriter(server.getOutputStream());
         Scanner in=new Scanner(server.getInputStream());
         outToServer.println(text);
         outToServer.flush();
-        String response=in.nextLine();
+        String response=in.next();
         if(response==null)
             System.out.println("problem getting the right response from your server, cannot continue the test (-100)");
-        if(response.charAt(0)!='1'||in.next().charAt(0)!='2'){
-            System.out.println("Wrong client 4, (-33)");
-        }
+        if(response.compareTo("1") == 0)
+            System.out.println(response + in.nextLine() + " " + in.nextLine());
+        else
+            System.out.println(response + in.nextLine());
         in.close();
         outToServer.close();
         server.close();
     }
 
+
+
+    public static void client5(int port) throws Exception{
+        Socket server=new Socket("localhost", port);
+        int numPlayer=0;
+        int x= 7;
+        int y= 1;
+        char v_or_h='H';
+        char q_or_c='C';
+
+
+        //Frank Herbert - Dune.txt,shakespeare.txt
+        String text =0+"\n["+x+","+y+","+v_or_h+"]"+"\n"+q_or_c+",bee.txt,"+"HIJACKING";
+        PrintWriter outToServer=new PrintWriter(server.getOutputStream());
+        Scanner in=new Scanner(server.getInputStream());
+        outToServer.println(text);
+        outToServer.flush();
+        String response=in.next();
+        if(response==null)
+            System.out.println("problem getting the right response from your server, cannot continue the test (-100)");
+        if(response.compareTo("1") == 0)
+            System.out.println(response + in.nextLine() + " " + in.nextLine());
+        else
+            System.out.println(response + in.nextLine());
+        in.close();
+        outToServer.close();
+        server.close();
+    }
+
+    public static void client6(int port) throws Exception{
+        Socket server=new Socket("localhost", port);
+        int numPlayer=0;
+        int x= 5;
+        int y= 9;
+        char v_or_h='V';
+        char q_or_c='Q';
+
+
+        //Frank Herbert - Dune.txt,shakespeare.txt
+        String text =0+"\n["+x+","+y+","+v_or_h+"]"+"\n"+q_or_c+",bee.txt,"+"DO_";
+        PrintWriter outToServer=new PrintWriter(server.getOutputStream());
+        Scanner in=new Scanner(server.getInputStream());
+        outToServer.println(text);
+        outToServer.flush();
+        String response=in.next();
+        if(response==null)
+            System.out.println("problem getting the right response from your server, cannot continue the test (-100)");
+        if(response.compareTo("1") == 0)
+            System.out.println(response + in.nextLine() + " " + in.nextLine());
+        else
+            System.out.println(response);
+        in.close();
+        outToServer.close();
+        server.close();
+    }
 
 
 
@@ -112,10 +173,16 @@ public class hostServerTest {
 
         hs.startConnection(port); // runs in the background
         try {
+
+
+            //client6(port);
+
             client1(port);
             client2(port);
             client3(port);
             client4(port);
+            client5(port);
+
         }catch(Exception e) {
             System.out.println("some exception was thrown while testing your server, cannot continue the test (-100)");
             ok=false;
