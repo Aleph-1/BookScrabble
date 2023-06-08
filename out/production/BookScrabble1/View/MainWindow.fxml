@@ -581,8 +581,8 @@
                   <Button defaultButton="true" maxHeight="300.0" maxWidth="300.0" mnemonicParsing="false" onAction="#clicked" prefHeight="55.0" prefWidth="55.0" style="-fx-text-fill: black; -fx-background-color: green; -fx-border-color: black;" wrapText="true" GridPane.columnIndex="3" GridPane.rowIndex="6" />
                </children>
             </GridPane>
-            <Button layoutX="918.0" layoutY="486.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="90.0" text="Button" />
-            <TextField fx:id="word" layoutX="918.0" layoutY="413.0" prefHeight="51.0" prefWidth="201.0" promptText="Inset Your Word">
+            <Button layoutX="918.0" layoutY="486.0" mnemonicParsing="false" onAction="#queryButton" prefHeight="34.0" prefWidth="90.0" text="Button" />
+            <TextField fx:id="Text" layoutX="918.0" layoutY="413.0" prefHeight="51.0" prefWidth="201.0" promptText="Insert Your Word">
                <font>
                   <Font size="18.0" />
                </font>

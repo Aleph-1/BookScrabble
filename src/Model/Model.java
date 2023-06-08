@@ -1,8 +1,9 @@
 package Model;
 
 import java.io.IOException;
+import java.util.Observable;
 
-public class Model {
+public class Model extends Observable {
 
     hostServer hs = new hostServer();
 

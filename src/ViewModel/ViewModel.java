@@ -1,3 +1,5 @@
+package ViewModel;
+
 import Model.Model;
 
 import java.util.Observable;
