@@ -9,7 +9,7 @@ import javafx.stage.Stage;
 
 import java.awt.*;
 
-public class Blank extends Application {
+public class ViewRun extends Application {
 
     public static void main(String[] args){
         launch(args);
