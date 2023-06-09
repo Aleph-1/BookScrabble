@@ -1,5 +1,9 @@
 package View;
 
+import Model.MileStone3.test.Board;
+import Model.MileStone3.test.Tile;
+import Model.Model;
+import ViewModel.ViewModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -23,6 +27,7 @@ public class MainWindowController {
     String word;
 
     String protocol;
+    Button[][] buttons=new Button[15][15];
 
 
     boolean clicked=false;
@@ -31,6 +36,7 @@ public class MainWindowController {
     public static String text(int id,int x, int y, char v_or_h,char q_or_c,String word){
         return id+"\n["+x+","+y+","+v_or_h+"]"+"\n"+q_or_c+",bee.txt,"+word;
     }
+
 
     public void queryButton(){
         if(clicked){
@@ -52,15 +58,22 @@ public class MainWindowController {
     }
 
 
-
+    public void saveButtons(){
+        for(Node but:myGrid.getChildren()){
+            if(but instanceof Button){
+                buttons[myGrid.getRowIndex(but)-1][myGrid.getColumnIndex(but)-1]= (Button) but;
+            }
+        }
+    }
 
     public void clicked(ActionEvent actionEvent) {
+        saveButtons();
         Button but=(Button) actionEvent.getSource();
         int col= myGrid.getColumnIndex(but);
         int row= myGrid.getRowIndex(but);
         x=col;
         y=row;
-        Button right = getButtonByLocation(row,col+1);
+        Button right = buttons[row-1][col];
         if(!clicked)
             saveStyles();
         if((!right.getStyle().contains("-fx-border-color: #00ff00;")&&col!=15)||row==15){
@@ -76,13 +89,13 @@ public class MainWindowController {
         }
         if(h_v=='H'){
             for(int i=col;i<16;i++){
-                Button n=getButtonByLocation(row,i);
+                Button n=buttons[row-1][i-1];
                 n.setStyle("-fx-border-color: #00ff00;");
             }
         }
         else{
             for(int i=row;i<16;i++){
-                Button n=getButtonByLocation(i,col);
+                Button n=buttons[i-1][col-1];
                 n.setStyle("-fx-border-color: #00ff00;");
             }
         }
