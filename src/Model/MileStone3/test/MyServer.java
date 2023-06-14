@@ -4,12 +4,14 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class MyServer {
+    protected int port;
+    protected ClientHandler ch;
+    protected volatile boolean stop;
 
-    private int port;
-    private ClientHandler ch;
-    private volatile boolean stop;
 
     public MyServer(int port, ClientHandler ch){
         this.port = port;

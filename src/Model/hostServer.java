@@ -10,12 +10,12 @@ import java.util.Scanner;
 public class hostServer{
 
     int score = 0;
-    MyServer server;
+    threadedServer server;
     Board b;
     public multClientHandler mch = new multClientHandler();
 
     public void startConnection(int port){
-        server = new MyServer(port,mch);
+        server = new threadedServer(port,mch);
         server.start();
     }
 
@@ -44,20 +44,18 @@ public class hostServer{
             outToServer.println(diffText); //Will be taken from view
         }
 
-        if(response.compareTo("1") == 0){
+        if(response.compareTo("1") == 0){ // If your word got accepted, 2 will happen to you as well
 
             score += Integer.parseInt(in.next());
-            in.next();
-            String details = in.nextLine();
 
-            String[] data = details.replace("[","").replace("]","").split(",");
-
-            Word w = new Word(get(data[3]),Integer.parseInt(data[0]),Integer.parseInt(data[1]),data[2].compareTo("true") == 0);
-            b.tryPlaceWord(w);
         }
 
-        else{
-            System.out.println("Invalid");
+        if(in.next().compareTo("2") == 0){ //Update Board
+
+            String details = in.nextLine();
+            String[] data = details.replace("[","").replace("]","").split(",");
+            Word w = new Word(get(data[3]),Integer.parseInt(data[0]),Integer.parseInt(data[1]),data[2].compareTo("true") == 0);
+            b.tryPlaceWord(w);
         }
 
 
