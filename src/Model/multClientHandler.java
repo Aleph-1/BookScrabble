@@ -1,18 +1,24 @@
 package Model;
 
 import Model.MileStone3.test.*;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.StringProperty;
 
 import java.io.*;
 import java.util.*;
 
-public class multClientHandler implements ClientHandler, Runnable{ // -1 - Illegal command, 0 - Too many players, 1 - Accepted, 2 - Update Board according to provided string, 3 -Not your turn, 4 - Next turn is id specified
+public class multClientHandler extends Observable implements ClientHandler, Runnable { // -1 - Illegal command, 0 - Too many players, 1 - Accepted, 2 - Update Board according to provided string, 3 -Not your turn, 4 - Next turn is id specified
 
     static int connections; //To check if someone is trying to give commands when it's not his turn.
     static Board b = Board.getBoard();
+
+    public StringProperty status;
+    String newGameData; //The X,Y,V/H,etc...
     HashMap<Integer,PrintWriter> users = new HashMap<>();
     DictionaryManager dm = new DictionaryManager();
     BufferedReader in;
     PrintWriter out;
+
 
     public boolean checkOutcomeWords(Word w, String... booksGiven) { //booksGiven - Q,Books,Word
 
@@ -50,17 +56,22 @@ public class multClientHandler implements ClientHandler, Runnable{ // -1 - Illeg
 
     private void sendApproved(Word w) {
         connections++;
+
+
         out.println(1 + " " + b.tryPlaceWord(w)); // 1 means Approved word,b.tryPlaceWord returns the score.
 
-        for(PrintWriter pw : users.values()) //Notify all
-            pw.println(2 + " " + "[" + w.getRow() + "," + w.getCol() + "," + w.isVertical() + "," + w.toStringW()+"]");  // 2 means update board, each customer will update his board according to that.
+        out.println(2 + " " + "[" + w.getRow() + "," + w.getCol() + "," + w.isVertical() + "," + w.toStringW()+"]");
+
 
         /*
+        for(PrintWriter pw : users.values()) //Notify all
+            pw.println(2 + " " + "[" + w.getRow() + "," + w.getCol() + "," + w.isVertical() + "," + w.toStringW()+"]");  // 2 means update board, each customer will update his board according to that.
+         */
+
+
         if(connections < 4)
             out.println(4 + " " + "Not enough users to determine whose turn next"); // At least 4 users are needed to know which turn's next.
         else
-
-         */
         users.get(connections % 4).println(4 + " Your Turn!");
         out.println(System.lineSeparator());
     }

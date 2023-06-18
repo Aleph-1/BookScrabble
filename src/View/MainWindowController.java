@@ -4,19 +4,23 @@ import Model.MileStone3.test.Board;
 import Model.MileStone3.test.Tile;
 import Model.Model;
 import ViewModel.ViewModel;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
-
+import javafx.scene.layout.HBox;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.io.Console;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Observable;
 
-public class MainWindowController {
+public class MainWindowController extends Observable {
     @FXML
     GridPane myGrid;
     @FXML
@@ -25,7 +29,12 @@ public class MainWindowController {
     int id;
     int x,y;
     String word;
-
+    ViewModel vm;
+    String IP = "localhost";
+    int PORT = 8080;
+    Board b = Board.getBoard();
+    public IntegerProperty score;
+    public StringProperty statusMessage;
     String protocol;
     Button[][] buttons=new Button[15][15];
 
@@ -33,8 +42,13 @@ public class MainWindowController {
     boolean clicked=false;
     Map<Button,String> styleMap;
 
+    MainWindowController(ViewModel vm){
+        this.vm = vm;
+        this.addObserver(vm);
+    }
+
     public static String text(int id,int x, int y, char v_or_h,char q_or_c,String word){
-        return id+"\n["+x+","+y+","+v_or_h+"]"+"\n"+q_or_c+",bee.txt,"+word;
+        return id+" ["+x+","+y+","+v_or_h+"]"+" "+q_or_c+",bee.txt,"+word;
     }
 
 
@@ -42,7 +56,10 @@ public class MainWindowController {
         if(clicked){
             word=Text.getText();
             protocol=text(id,x,y,h_v,'Q',word);
-            System.out.println(protocol);
+            vm.request=protocol;
+            setChanged();
+            notifyObservers(IP + " " + PORT);
+            System.out.println(protocol); //For testing reasons.
         }
 
     }
@@ -55,6 +72,12 @@ public class MainWindowController {
                 styleMap.put((Button) but,but.getStyle());
             }
         }
+    }
+
+    public void setViewModel(ViewModel vm){
+
+
+
     }
 
 
