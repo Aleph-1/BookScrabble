@@ -5,7 +5,7 @@ import java.util.Random;
 
 public class Tile {
 
-    final char letter;
+    public final char letter;
     final int score;
 
     @Override
