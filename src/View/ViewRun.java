@@ -1,14 +1,12 @@
 package View;
 
 import Model.Model;
+import ViewModel.ViewModel;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-
-import java.awt.*;
 
 public class ViewRun extends Application {
 
@@ -19,7 +17,15 @@ public class ViewRun extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         try{
-            BorderPane root= (BorderPane) FXMLLoader.load(MainWindowController.class.getResource("MainWindow.fxml"));
+            FXMLLoader fxl= new FXMLLoader();
+            BorderPane root= fxl.load(getClass().getResource("MainWindow1.fxml").openStream());
+            Model m=new Model();
+            m.startHost(3080);
+            MainWindowController wc=fxl.getController();
+            ViewModel vm=new ViewModel(m);
+            wc.init(vm);
+            vm.setView(wc);
+
             Scene scene=new Scene(root,1200,900);
             scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
             stage.setScene(scene);

@@ -2,21 +2,28 @@ package View;
 
 import Model.MileStone3.test.Board;
 import Model.MileStone3.test.Tile;
+import Model.MileStone3.test.Word;
 import Model.Model;
 import ViewModel.ViewModel;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
-
+import javafx.scene.layout.HBox;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.io.Console;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Observable;
 
-public class MainWindowController {
+public class MainWindowController extends Observable {
     @FXML
     GridPane myGrid;
     @FXML
@@ -26,15 +33,27 @@ public class MainWindowController {
     int x,y;
     String word;
 
+    ViewModel vm=new ViewModel(new Model());
+    String IP = "localhost";
+    int PORT = 3080;
+    Board b = Board.getBoard();
+    public IntegerProperty score=new SimpleIntegerProperty();
+    public StringProperty statusMessage=new SimpleStringProperty();
     String protocol;
     Button[][] buttons=new Button[15][15];
 
 
     boolean clicked=false;
     Map<Button,String> styleMap;
+    void init(ViewModel vm){
+        this.vm=vm;
+        this.addObserver(vm);
+        score.set(0);
+        statusMessage.set("");
+    }
 
     public static String text(int id,int x, int y, char v_or_h,char q_or_c,String word){
-        return id+"\n["+x+","+y+","+v_or_h+"]"+"\n"+q_or_c+",bee.txt,"+word;
+        return id+" ["+x+","+y+","+v_or_h+"]"+" "+q_or_c+",bee.txt,"+word;
     }
 
 
@@ -42,7 +61,14 @@ public class MainWindowController {
         if(clicked){
             word=Text.getText();
             protocol=text(id,x,y,h_v,'Q',word);
-            System.out.println(protocol);
+            Boolean n=h_v=='V';
+            Word w=new Word(get(word),x,y,n);
+            vm.request=protocol;
+            setChanged();
+            notifyObservers(IP + " " + PORT);
+            System.out.println(protocol); //For testing reasons.
+            b=Board.getBoard();
+            updateBoard(b);
         }
 
     }
@@ -55,6 +81,29 @@ public class MainWindowController {
                 styleMap.put((Button) but,but.getStyle());
             }
         }
+    }
+
+    public void updateBoard(Board b1){
+        for(int i=0;i<15;i++){
+            for(int j=0;j<15;j++){
+                Button but=buttons[i][j];
+                if(b1.getTiles()[i][j].letter==' '){
+                    but.setText(String.valueOf(b1.getTiles()[i][j].letter));
+                }
+            }
+        }
+    }
+
+
+
+    private static Tile[] get(String s) {
+        Tile[] ts = new Tile[s.length()];
+        int i = 0;
+        for (char c : s.toCharArray()) {
+            ts[i] = Tile.Bag.getBag().getTile(c);
+            i++;
+        }
+        return ts;
     }
 
 
@@ -106,17 +155,7 @@ public class MainWindowController {
         clicked=true;
     }
 
-    Button getButtonByLocation(int row,int col){
-        Button l=new Button();
-        for(Node but:myGrid.getChildren()){
-            if(but instanceof Button){
-                if((myGrid.getRowIndex(but)==row)&&(myGrid.getColumnIndex(but)==col)){
-                    return (Button) but;
-                }
-            }
-        }
-        return l;
-    }
+
 
 
 }
