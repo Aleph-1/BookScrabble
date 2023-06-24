@@ -13,6 +13,7 @@ import javafx.beans.property.StringProperty;
 import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.concurrent.atomic.AtomicReference;
 
 
 public class ViewModel implements Observer {
@@ -64,6 +65,7 @@ public class ViewModel implements Observer {
                 throw new RuntimeException(e);
             }
         }
+
 
     }
 

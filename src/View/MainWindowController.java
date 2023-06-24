@@ -13,34 +13,41 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.io.Console;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Observable;
 
 public class MainWindowController extends Observable {
     @FXML
-    GridPane myGrid;
+    public GridPane myGrid;
     @FXML
-    TextField Text;
+    public TextField Text;
+
+    @FXML
+    public TextArea area;
     char h_v;
     int id;
     int x,y;
     String word;
+    ArrayList<Character> bagOfChars=new ArrayList<>();
 
     ViewModel vm=new ViewModel(new Model());
     String IP = "localhost";
     int PORT = 3080;
     Board b = Board.getBoard();
+    Tile.Bag bag= Tile.Bag.getBag();
     public IntegerProperty score=new SimpleIntegerProperty();
     public StringProperty statusMessage=new SimpleStringProperty();
     String protocol;
-    Button[][] buttons=new Button[15][15];
+    public Button[][] buttons=new Button[15][15];
 
 
     boolean clicked=false;
@@ -62,12 +69,12 @@ public class MainWindowController extends Observable {
             word=Text.getText();
             protocol=text(id,x,y,h_v,'Q',word);
             Boolean n=h_v=='V';
-            Word w=new Word(get(word),x,y,n);
+            Word w=new Word(get(word),y-1,x-1,n);
             vm.request=protocol;
             setChanged();
             notifyObservers(IP + " " + PORT);
             System.out.println(protocol); //For testing reasons.
-            b=Board.getBoard();
+            b.tryPlaceWord(w);
             updateBoard(b);
         }
 
@@ -84,17 +91,32 @@ public class MainWindowController extends Observable {
     }
 
     public void updateBoard(Board b1){
+        saveButtons();
         for(int i=0;i<15;i++){
             for(int j=0;j<15;j++){
                 Button but=buttons[i][j];
-                if(b1.getTiles()[i][j].letter==' '){
+                if(b1.getTiles()[i][j]!=null){
                     but.setText(String.valueOf(b1.getTiles()[i][j].letter));
+
                 }
+
             }
         }
     }
 
+    public void draw(){
+        bagOfChars.add((char)bag.getRand().letter);
+        displayBag();
+    }
 
+    public void displayBag(){
+        StringBuilder str=new StringBuilder();
+        for(char c:bagOfChars){
+            str.append(c+",");
+        }
+        String s=str.toString();
+        area.setText(s);
+    }
 
     private static Tile[] get(String s) {
         Tile[] ts = new Tile[s.length()];
