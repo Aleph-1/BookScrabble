@@ -26,8 +26,8 @@ public class ViewModel implements Observer {
 
     public void setView(View.MainWindowController v){
         this.v = v;
-        v.score.bind(score);
-        v.statusMessage.bind(statusMessage);
+        this.v.score.bind(score);
+        this.v.statusMessage.bind(statusMessage);
 
     }
 
@@ -37,6 +37,7 @@ public class ViewModel implements Observer {
         response = new SimpleStringProperty();
         statusMessage = new SimpleStringProperty();
 
+
     }
 
 
@@ -45,13 +46,13 @@ public class ViewModel implements Observer {
 
         if (o == m) {
 
-            if (response.toString().compareTo("-1") == 0)
+            if (response.getValue().compareTo("-1") == 0)
                 statusMessage.set("Invalid word try again!");
 
             else {
 
-                String[] data = response.toString().replace("[", "").replace("]", "").split(",");
-                Word w = new Word(get(data[3]), Integer.parseInt(data[0]), Integer.parseInt(data[1]), data[2].compareTo("true") == 0);
+                String[] data = response.getValue().replace("[", "").replace("]", "").split(",");
+                Word w = new Word(get(data[3]), Integer.parseInt(data[0].trim()), Integer.parseInt(data[1]), data[2].compareTo("true") == 0);
                 board.tryPlaceWord(w);
             }
 

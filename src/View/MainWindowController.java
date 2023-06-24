@@ -5,6 +5,8 @@ import Model.MileStone3.test.Tile;
 import Model.Model;
 import ViewModel.ViewModel;
 import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -31,7 +33,7 @@ public class MainWindowController extends Observable {
     String word;
     ViewModel vm;
     String IP = "localhost";
-    int PORT = 8080;
+    int PORT = 8085;
     Board b = Board.getBoard();
     public IntegerProperty score;
     public StringProperty statusMessage;
@@ -42,10 +44,19 @@ public class MainWindowController extends Observable {
     boolean clicked=false;
     Map<Button,String> styleMap;
 
-    MainWindowController(ViewModel vm){
-        this.vm = vm;
+
+
+    public void init(ViewModel vm){
+        this.vm=vm;
         this.addObserver(vm);
+        score = new SimpleIntegerProperty();
+        statusMessage = new SimpleStringProperty();
+        score.set(0);
+        statusMessage.set("");
     }
+
+
+
 
     public static String text(int id,int x, int y, char v_or_h,char q_or_c,String word){
         return id+" ["+x+","+y+","+v_or_h+"]"+" "+q_or_c+",bee.txt,"+word;
@@ -72,12 +83,6 @@ public class MainWindowController extends Observable {
                 styleMap.put((Button) but,but.getStyle());
             }
         }
-    }
-
-    public void setViewModel(ViewModel vm){
-
-
-
     }
 
 

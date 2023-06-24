@@ -19,8 +19,9 @@ public class Model extends Observable {
     ViewModel vm;
     hostServer hs = new hostServer();
 
-    Model(ViewModel vm){
+    public  void setViewModel(ViewModel vm){
         this.vm = vm;
+        this.addObserver(vm);
     }
 
     public void startHost(int port) {
@@ -57,6 +58,8 @@ public class Model extends Observable {
             score.add(Integer.parseInt(in.next()));
             in.next(); //Update Board Protocol
             returnString.set(in.nextLine());
+            setChanged();
+            notifyObservers();
         }
 
 
