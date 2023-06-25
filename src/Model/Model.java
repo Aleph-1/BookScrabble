@@ -1,8 +1,4 @@
 package Model;
-
-import Model.MileStone3.test.Word;
-
-import javax.swing.text.View;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -47,7 +43,7 @@ public class Model extends Observable {
 
         vm.response.bind(returnString);
 
-        while (response.compareTo("-1") == 0) { //The first index means the type of event
+        if (response.compareTo("-1") == 0) { //The first index means the type of event
             returnString.set("-1");
             setChanged();
             notifyObservers();

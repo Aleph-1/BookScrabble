@@ -1,11 +1,9 @@
 package Model;
 
 import Model.MileStone3.test.MyServer;
-
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketTimeoutException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -27,7 +25,7 @@ public class threadedServer extends MyServer {
 
         try {
             ServerSocket server = new ServerSocket(port);
-           // server.setSoTimeout(1000);
+            //server.setSoTimeout(1000);
 
             while (!stop) {
                     Socket aClient = server.accept();

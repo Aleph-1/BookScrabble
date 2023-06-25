@@ -1,9 +1,7 @@
 package Model;
 
 import Model.MileStone3.test.*;
-import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.StringProperty;
-
 import java.io.*;
 import java.util.*;
 
@@ -145,7 +143,7 @@ public class multClientHandler extends Observable implements ClientHandler, Runn
         String[] boardData = boardDetails.replace("[", "").replace("]", "").split(",");
         String[] wordsData = wordsDetails.split(",");
 
-        Word w = new Word(get(wordsData[wordsData.length - 1]), Integer.parseInt(boardData[0]), Integer.parseInt(boardData[1]), boardData[2].compareTo("V") == 0);
+        Word w = new Word(get(wordsData[wordsData.length - 1]), Integer.parseInt(boardData[1]), Integer.parseInt(boardData[0]), boardData[2].compareTo("V") == 0);
 
         if (b.boardLegal(w) && checkOutcomeWords(w, wordsData)) {
             sendApproved(w); //We can't update the board live for all the clients until we have threads.
@@ -153,7 +151,7 @@ public class multClientHandler extends Observable implements ClientHandler, Runn
         else
             out.println("-1 Illegal Command Try again!"); //-1 means Illegal command
 
-  //      close();
+        //    close();
 
         //In the future we might want to put everything in a while loop and have a timeout for connecting.
 

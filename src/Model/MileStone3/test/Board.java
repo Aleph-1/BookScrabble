@@ -44,6 +44,7 @@ private boolean isInBoard(Word w){
 
     if(w.vertical == false && (w.col+w.tiles.length-1 > 14))
         return false;
+
     return true;
 }
 
@@ -71,7 +72,7 @@ public boolean boardLegal(Word w){
     if(!isInBoard(w))
         return false;
 
-    if(firstTurn && w.col != 7 && w.row != 7)
+    if(firstTurn && w.col-1 != 7 && w.row-1 != 7)
         return false;
 
     if((w.vertical == true && w.row+w.tiles.length < 7) || (w.vertical==false && w.col+w.tiles.length < 7)){
@@ -122,9 +123,28 @@ private Word horizontalWord(Word w, Tile[][] tempGrid,ArrayList<Tile> word){
         }
         return makeWord(word,finalRow,w.col,w.vertical);
     }
+
+
+    public Tile[][] copyGrid(Tile[][] gr){
+
+    Tile[][] tempGrid = new Tile[15][15];
+
+    for(int i = 0; i < 15; i++){
+        for(int j = 0; j < 15; j++){
+            tempGrid[i][j] = gr[i][j];
+        }
+    }
+
+    return tempGrid;
+    }
+
+
+
 public ArrayList<Word> getWords(Word w) {
 
-    Tile[][] tempGrid = grid.clone();
+
+    //grid.clone();
+    Tile[][] tempGrid = copyGrid(grid);
     placeOnBoard(w, tempGrid);
     ArrayList<Tile> tempWord = new ArrayList<Tile>();
     ArrayList<Word> words = new ArrayList<Word>();

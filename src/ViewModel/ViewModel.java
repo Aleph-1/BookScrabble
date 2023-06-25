@@ -3,13 +3,11 @@ package ViewModel;
 import Model.MileStone3.test.Board;
 import Model.MileStone3.test.Tile;
 import Model.MileStone3.test.Word;
-import View.ViewRun;
 import Model.Model;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-
 import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
@@ -37,9 +35,7 @@ public class ViewModel implements Observer {
         response = new SimpleStringProperty();
         statusMessage = new SimpleStringProperty();
 
-
     }
-
 
     @Override
     public void update(Observable o, Object arg) {
@@ -50,9 +46,9 @@ public class ViewModel implements Observer {
                 statusMessage.set("Invalid word try again!");
 
             else {
-
                 String[] data = response.getValue().replace("[", "").replace("]", "").split(",");
                 Word w = new Word(get(data[3]), Integer.parseInt(data[0].trim()), Integer.parseInt(data[1]), data[2].compareTo("true") == 0);
+                statusMessage.set("Word Approved!");
                 board.tryPlaceWord(w);
             }
 
@@ -65,6 +61,7 @@ public class ViewModel implements Observer {
                 throw new RuntimeException(e);
             }
         }
+
     }
 
     public static Tile[] get(String s) {

@@ -1,7 +1,6 @@
 package View;
 
 import Model.Model;
-import View.MainWindowController;
 import ViewModel.ViewModel;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -30,20 +29,11 @@ public class ViewRun extends Application {
             vm.setView(wc);
 
 
-
             Scene scene=new Scene(root,1200,900);
             scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
             stage.setScene(scene);
             stage.show();
         }catch (Exception e){ e.printStackTrace();}
 
-//        StackPane layout= new StackPane();
-//
-//        javafx.scene.control.Button button= new javafx.scene.control.Button("Hello World");
-//        layout.getChildren().add(button);
-//        Scene scene = new Scene(layout,300,300);
-//        stage.setScene(scene);
-//        stage.setTitle("JavaFX 19");
-//        stage.show();
     }
 }

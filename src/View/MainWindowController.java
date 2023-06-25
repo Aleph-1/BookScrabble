@@ -1,8 +1,6 @@
 package View;
 
 import Model.MileStone3.test.Board;
-import Model.MileStone3.test.Tile;
-import Model.Model;
 import ViewModel.ViewModel;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -14,10 +12,6 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.io.Console;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Observable;
