@@ -25,7 +25,8 @@ public class ViewModel implements Observer {
     public StringProperty statusMessage; //Should be bounded to View as well
     public Board board = Board.getBoard();
 
-    public void setView(View.MainWindowController v) {
+
+    public void setView(View.MainWindowController v){
         this.v = v;
         this.v.score.bind(score);
         this.v.statusMessage.bind(statusMessage);
@@ -46,16 +47,20 @@ public class ViewModel implements Observer {
 
         if (o == m) {
 
-            if (response.toString().compareTo("-1") == 0)
+
+            if (response.getValue().compareTo("-1") == 0)
                 statusMessage.set("Invalid word try again!");
-
             else {
+                if (response.getValue().compareTo("3")==0)
+                    statusMessage.set("Not Your Turn!");
+                else {
+                    statusMessage.set("Word Approved!");
+                    String[] data = response.getValue().replace("[", "").replace("]", "").split(",");
+                    Word w = new Word(get(data[3]), Integer.parseInt(data[0].trim()), Integer.parseInt(data[1]), data[2].compareTo("true") == 0);
 
-                String[] data = response.toString().replace("[", "").replace("]", "").split(",");
-                Word w = new Word(get(data[3]), Integer.parseInt(data[0]), Integer.parseInt(data[1]), data[2].compareTo("true") == 0);
-                board.tryPlaceWord(w);
+                    board.tryPlaceWord(w);
+                }
             }
-
         }
 
         if(o == v){
@@ -65,7 +70,6 @@ public class ViewModel implements Observer {
                 throw new RuntimeException(e);
             }
         }
-
 
     }
 
@@ -79,3 +83,4 @@ public class ViewModel implements Observer {
         return ts;
     }
 }
+

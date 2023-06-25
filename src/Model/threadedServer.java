@@ -27,25 +27,16 @@ public class threadedServer extends MyServer {
 
         try {
             ServerSocket server = new ServerSocket(port);
-            //server.setSoTimeout(1000);
+
+           // server.setSoTimeout(1000);
 
             while (!stop) {
-                try {
                     Socket aClient = server.accept();
                     ch.handleClient(aClient.getInputStream(), aClient.getOutputStream()); // Might cause problems since the initialization of the streams might be incorrect by the time the thread turn will come.
-                    multClientHandler m=(multClientHandler) ch;
-                    threadPool.execute(m);  // This is a server that assumes you will be using a multithreaded client handler (Which is an instance of Runnable)
-                    int i=0;
-                    while(m.in==null){
-                        i++;
-                    }
-                    if(m.in!=null){
-                        ch.close();
-                    }
-                    aClient.close();
-                }catch (SocketTimeoutException e) {}
-
+                    threadPool.execute((multClientHandler)ch);  // This is a server that assumes you will be using a multithreaded client handler (Which is an instance of Runnable)
             }
+
+            ch.close();
             server.close();
 
         }catch (IOException e){};

@@ -19,11 +19,10 @@ public class Model extends Observable {
     ViewModel vm;
     hostServer hs = new hostServer();
 
-    public void setViewModel(ViewModel vm){
-        this.vm=vm;
-    }
 
-    public Model(){
+    public  void setViewModel(ViewModel vm){
+        this.vm = vm;
+        this.addObserver(vm);
 
     }
 
@@ -50,7 +49,7 @@ public class Model extends Observable {
 
         vm.response.bind(returnString);
 
-        while (response.compareTo("-1") == 0) { //The first index means the type of event
+        if (response.compareTo("-1") == 0) { //The first index means the type of event
             returnString.set("-1");
             setChanged();
             notifyObservers();
@@ -61,6 +60,9 @@ public class Model extends Observable {
             score.add(Integer.parseInt(in.next()));
             in.next(); //Update Board Protocol
             returnString.set(in.nextLine());
+            setChanged();
+            notifyObservers();
+
         }
 
 

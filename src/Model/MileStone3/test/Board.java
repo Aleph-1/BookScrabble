@@ -122,9 +122,21 @@ private Word horizontalWord(Word w, Tile[][] tempGrid,ArrayList<Tile> word){
         }
         return makeWord(word,finalRow,w.col,w.vertical);
     }
+    public Tile[][] copyGrid(Tile[][] gr){
+
+        Tile[][] tempGrid = new Tile[15][15];
+
+        for(int i = 0; i < 15; i++){
+            for(int j = 0; j < 15; j++){
+                tempGrid[i][j] = gr[i][j];
+            }
+        }
+
+        return tempGrid;
+    }
 public ArrayList<Word> getWords(Word w) {
 
-    Tile[][] tempGrid = grid.clone();
+    Tile[][] tempGrid =copyGrid(grid);
     placeOnBoard(w, tempGrid);
     ArrayList<Tile> tempWord = new ArrayList<Tile>();
     ArrayList<Word> words = new ArrayList<Word>();

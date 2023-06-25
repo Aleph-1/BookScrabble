@@ -33,6 +33,9 @@ public class MainWindowController extends Observable {
 
     @FXML
     public TextArea area;
+
+    @FXML
+            public TextArea serRes;
     char h_v;
     int id;
     int x,y;
@@ -41,41 +44,54 @@ public class MainWindowController extends Observable {
 
     ViewModel vm=new ViewModel(new Model());
     String IP = "localhost";
-    int PORT = 3080;
+    int PORT = 8085;
     Board b = Board.getBoard();
     Tile.Bag bag= Tile.Bag.getBag();
     public IntegerProperty score=new SimpleIntegerProperty();
     public StringProperty statusMessage=new SimpleStringProperty();
+
+
     String protocol;
     public Button[][] buttons=new Button[15][15];
 
 
     boolean clicked=false;
     Map<Button,String> styleMap;
-    void init(ViewModel vm){
+
+
+
+
+    public void init(ViewModel vm){
         this.vm=vm;
         this.addObserver(vm);
+        score = new SimpleIntegerProperty();
+        statusMessage = new SimpleStringProperty();
         score.set(0);
         statusMessage.set("");
     }
+
+
+
 
     public static String text(int id,int x, int y, char v_or_h,char q_or_c,String word){
         return id+" ["+x+","+y+","+v_or_h+"]"+" "+q_or_c+",bee.txt,"+word;
     }
 
 
+
     public void queryButton(){
         if(clicked){
             word=Text.getText();
-            protocol=text(id,x,y,h_v,'Q',word);
+            protocol=text(id,y-1,x-1,h_v,'Q',word);
             Boolean n=h_v=='V';
             Word w=new Word(get(word),y-1,x-1,n);
             vm.request=protocol;
             setChanged();
             notifyObservers(IP + " " + PORT);
             System.out.println(protocol); //For testing reasons.
-            b.tryPlaceWord(w);
+            serRes.setText((statusMessage).getValue());
             updateBoard(b);
+
         }
 
     }

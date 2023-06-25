@@ -595,6 +595,12 @@
                </font>
             </Text>
             <TextArea fx:id="area" layoutX="938.0" layoutY="128.0" prefHeight="126.0" prefWidth="200.0" />
+            <TextArea fx:id="serRes" layoutX="938.0" layoutY="647.0" prefHeight="75.0" prefWidth="200.0" />
+            <Text layoutX="970.0" layoutY="606.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Server Response" textAlignment="CENTER" wrappingWidth="144.09375">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Text>
          </children>
       </Pane>
    </left>

@@ -16,8 +16,10 @@ public class multClientHandler extends Observable implements ClientHandler, Runn
     String newGameData; //The X,Y,V/H,etc...
     HashMap<Integer,PrintWriter> users = new HashMap<>();
     DictionaryManager dm = new DictionaryManager();
-    BufferedReader in;
-    PrintWriter out;
+
+     BufferedReader in;
+     PrintWriter out;
+
 
 
     public boolean checkOutcomeWords(Word w, String... booksGiven) { //booksGiven - Q,Books,Word
@@ -72,7 +74,8 @@ public class multClientHandler extends Observable implements ClientHandler, Runn
         if(connections < 4)
             out.println(4 + " " + "Not enough users to determine whose turn next"); // At least 4 users are needed to know which turn's next.
         else
-            users.get(connections % 4).println(4 + " Your Turn!");
+
+        users.get(connections % 4).println(4 + " Your Turn!");
         out.println(System.lineSeparator());
     }
 
@@ -83,8 +86,8 @@ public class multClientHandler extends Observable implements ClientHandler, Runn
     @Override
     public void handleClient(InputStream inFromclient, OutputStream outToClient) { //The host can be a player he just needs to connect to the server like regular clients.
 
-        in = new BufferedReader(new InputStreamReader(inFromclient));
-        out = new PrintWriter(outToClient, true);
+        this.in = new BufferedReader(new InputStreamReader(inFromclient));
+        this.out = new PrintWriter(outToClient, true);
 
     }
 
@@ -119,9 +122,12 @@ public class multClientHandler extends Observable implements ClientHandler, Runn
 
         //Get data from client.
         try {
-            id = in.readLine();
-            boardDetails = in.readLine();
-            wordsDetails = in.readLine();
+
+
+            String data = in.readLine();
+            id = data.split(" ")[0];
+            boardDetails = data.split(" ")[1];
+            wordsDetails = data.split(" ")[2];
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -152,9 +158,12 @@ public class multClientHandler extends Observable implements ClientHandler, Runn
         else
             out.println("-1 Illegal Command Try again!"); //-1 means Illegal command
 
-        close();
+
+  //      close();
 
         //In the future we might want to put everything in a while loop and have a timeout for connecting.
 
     }
+
 }
+
