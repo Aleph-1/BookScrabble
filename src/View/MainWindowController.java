@@ -20,10 +20,7 @@ import javafx.scene.layout.HBox;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.io.Console;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Observable;
+import java.util.*;
 
 public class MainWindowController extends Observable {
     @FXML
@@ -35,7 +32,11 @@ public class MainWindowController extends Observable {
     public TextArea area;
 
     @FXML
-            public TextArea serRes;
+    public TextArea serRes;
+
+    @FXML
+    public TextArea scoreText;
+
     char h_v;
     int id;
     int x,y;
@@ -82,7 +83,7 @@ public class MainWindowController extends Observable {
     public void queryButton(){
         if(clicked){
             word=Text.getText();
-            protocol=text(id,y-1,x-1,h_v,'Q',word);
+            protocol=text(id,y-1,x-1,h_v,'C',word);
             Boolean n=h_v=='V';
             Word w=new Word(get(word),y-1,x-1,n);
             vm.request=protocol;
@@ -90,6 +91,13 @@ public class MainWindowController extends Observable {
             notifyObservers(IP + " " + PORT);
             System.out.println(protocol); //For testing reasons.
             serRes.setText((statusMessage).getValue());
+            if(!Objects.equals(scoreText.getText(), "")){
+                int sum=Integer.parseInt(scoreText.getText());
+                sum+=score.getValue();
+                scoreText.setText(String.valueOf(sum));
+            }
+            else
+                scoreText.setText(String.valueOf(score.getValue()));
             updateBoard(b);
 
         }
@@ -121,7 +129,21 @@ public class MainWindowController extends Observable {
     }
 
     public void draw(){
-        bagOfChars.add((char)bag.getRand().letter);
+        int s=0;
+        while(bagOfChars.size()<6){
+            Tile c= bag.getRand();
+            if(c!=null) {
+                bagOfChars.add(c.letter);
+            }
+        }
+        while(s!=1){
+            Tile c=bag.getRand();
+            if(c!=null) {
+                bagOfChars.add(c.letter);
+                s++;
+            }
+        }
+
         displayBag();
     }
 
@@ -160,15 +182,21 @@ public class MainWindowController extends Observable {
         int row= myGrid.getRowIndex(but);
         x=col;
         y=row;
-        Button right = buttons[row-1][col];
+        if(col==15)
+            h_v='V';
+        else{
+            Button right = buttons[row-1][col];
+            if((!right.getStyle().contains("-fx-border-color: #00ff00;")&&col!=15)||row==15){
+                h_v='H';
+            }
+            else{
+                h_v='V';
+            }
+        }
+
         if(!clicked)
             saveStyles();
-        if((!right.getStyle().contains("-fx-border-color: #00ff00;")&&col!=15)||row==15){
-            h_v='H';
-        }
-        else{
-            h_v='V';
-        }
+
         for(Node but1:myGrid.getChildren()){
             if(but1 instanceof Button){
                 but1.setStyle(styleMap.get(but1));

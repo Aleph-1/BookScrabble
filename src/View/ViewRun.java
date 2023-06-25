@@ -20,7 +20,7 @@ public class ViewRun extends Application {
         try{
 
             FXMLLoader fxl= new FXMLLoader();
-            BorderPane root= fxl.load(getClass().getResource("MainWindow1.fxml").openStream());
+            BorderPane root= fxl.load(getClass().getResource("MainWindow.fxml").openStream());
             Model m=new Model();
             m.startHost(8085);
             MainWindowController wc=fxl.getController();
@@ -35,6 +35,25 @@ public class ViewRun extends Application {
             scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
             stage.setScene(scene);
             stage.show();
+
+
+
+            FXMLLoader fxl1= new FXMLLoader();
+            BorderPane root1= fxl1.load(getClass().getResource("MainWindow.fxml").openStream());
+
+            MainWindowController wc1=fxl.getController();
+
+
+            wc1.init(vm);
+            vm.setView(wc1);
+
+            Stage stage1=new Stage();
+
+            Scene scene1=new Scene(root1,1200,900);
+            scene1.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+            stage1.setScene(scene1);
+            stage1.show();
+
         }catch (Exception e){ e.printStackTrace();}
 
     }

@@ -57,7 +57,6 @@ public class ViewModel implements Observer {
                     statusMessage.set("Word Approved!");
                     String[] data = response.getValue().replace("[", "").replace("]", "").split(",");
                     Word w = new Word(get(data[3]), Integer.parseInt(data[0].trim()), Integer.parseInt(data[1]), data[2].compareTo("true") == 0);
-
                     board.tryPlaceWord(w);
                 }
             }

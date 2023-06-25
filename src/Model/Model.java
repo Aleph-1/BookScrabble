@@ -55,9 +55,11 @@ public class Model extends Observable {
             notifyObservers();
         }
 
-        if (response.compareTo("1") == 0) { // If your word got accepted, 2 will happen to you as well
+        if (response.split(" ")[0].compareTo("1") == 0) { // If your word got accepted, 2 will happen to you as well
+            response=in.next();
             vm.score.bind(score);
-            score.add(Integer.parseInt(in.next()));
+            score.set(Integer.parseInt(response));
+
             in.next(); //Update Board Protocol
             returnString.set(in.nextLine());
             setChanged();

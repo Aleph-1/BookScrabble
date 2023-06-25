@@ -153,6 +153,7 @@ public class multClientHandler extends Observable implements ClientHandler, Runn
         Word w = new Word(get(wordsData[wordsData.length - 1]), Integer.parseInt(boardData[0]), Integer.parseInt(boardData[1]), boardData[2].compareTo("V") == 0);
 
         if (b.boardLegal(w) && checkOutcomeWords(w, wordsData)) {
+            
             sendApproved(w); //We can't update the board live for all the clients until we have threads.
         }
         else

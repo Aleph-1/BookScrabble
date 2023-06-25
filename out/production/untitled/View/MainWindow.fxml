@@ -582,21 +582,27 @@
                   <Button defaultButton="true" maxHeight="300.0" maxWidth="300.0" mnemonicParsing="false" onAction="#clicked" prefHeight="55.0" prefWidth="55.0" style="-fx-text-fill: black; -fx-background-color: green; -fx-border-color: black;" wrapText="true" GridPane.columnIndex="3" GridPane.rowIndex="6" />
                </children>
             </GridPane>
-            <Button layoutX="918.0" layoutY="486.0" mnemonicParsing="false" onAction="#queryButton" prefHeight="34.0" prefWidth="90.0" text="Query" />
-            <TextField fx:id="Text" layoutX="918.0" layoutY="413.0" prefHeight="51.0" prefWidth="201.0" promptText="Insert Your Word">
+            <Button layoutX="921.0" layoutY="598.0" mnemonicParsing="false" onAction="#queryButton" prefHeight="34.0" prefWidth="90.0" text="Query" />
+            <TextField fx:id="Text" layoutX="921.0" layoutY="526.0" prefHeight="51.0" prefWidth="201.0" promptText="Insert Your Word">
                <font>
                   <Font size="18.0" />
                </font>
             </TextField>
-            <Button layoutX="938.0" layoutY="254.0" mnemonicParsing="false" onAction="#draw" prefHeight="77.0" prefWidth="73.0" text="Draw Tile" />
-            <Text layoutX="985.0" layoutY="78.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tile Container" textAlignment="CENTER" wrappingWidth="105.23046875">
+            <Button layoutX="938.0" layoutY="398.0" mnemonicParsing="false" onAction="#draw" prefHeight="77.0" prefWidth="73.0" text="Draw Tile" />
+            <Text layoutX="985.0" layoutY="222.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tile Container" textAlignment="CENTER" wrappingWidth="105.23046875">
                <font>
                   <Font size="22.0" />
                </font>
             </Text>
-            <TextArea fx:id="area" layoutX="938.0" layoutY="128.0" prefHeight="126.0" prefWidth="200.0" />
-            <TextArea fx:id="serRes" layoutX="938.0" layoutY="647.0" prefHeight="75.0" prefWidth="200.0" />
-            <Text layoutX="970.0" layoutY="606.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Server Response" textAlignment="CENTER" wrappingWidth="144.09375">
+            <TextArea fx:id="area" layoutX="938.0" layoutY="265.0" prefHeight="126.0" prefWidth="200.0" />
+            <TextArea fx:id="serRes" layoutX="938.0" layoutY="765.0" prefHeight="75.0" prefWidth="200.0" />
+            <Text layoutX="966.0" layoutY="699.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Server Response" textAlignment="CENTER" wrappingWidth="144.09375">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Text>
+            <TextArea fx:id="scoreText" layoutX="935.0" layoutY="122.0" prefHeight="27.0" prefWidth="100.0" />
+            <Text layoutX="960.0" layoutY="108.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Score" wrappingWidth="50.396484375">
                <font>
                   <Font size="20.0" />
                </font>
