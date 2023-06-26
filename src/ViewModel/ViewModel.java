@@ -19,6 +19,7 @@ import java.util.concurrent.atomic.AtomicReference;
 public class ViewModel implements Observer {
     Model m;
     View.MainWindowController v;
+
     public String request; //Bounded to view
     public IntegerProperty score; // Bound to View
     public StringProperty response; // Bounded to Model
@@ -30,7 +31,6 @@ public class ViewModel implements Observer {
         this.v = v;
         this.v.score.bind(score);
         this.v.statusMessage.bind(statusMessage);
-
     }
 
     public ViewModel(Model m) {
@@ -59,6 +59,7 @@ public class ViewModel implements Observer {
                     Word w = new Word(get(data[3]), Integer.parseInt(data[0].trim()), Integer.parseInt(data[1]), data[2].compareTo("true") == 0);
                     v.score.bind(score);
                     board.tryPlaceWord(w);
+                    v.updateBoard(board);
                 }
             }
         }

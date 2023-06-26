@@ -36,6 +36,14 @@ public class MainWindowController extends Observable {
 
     @FXML
     public TextArea scoreText;
+    @FXML
+    public  TextArea userName;
+
+    public void idApply(){
+        b=Board.getBoard();
+        id= Integer.parseInt(userName.getText());
+        updateBoard(b);
+    }
 
     char h_v;
     int id;
@@ -87,7 +95,9 @@ public class MainWindowController extends Observable {
     }
 
     public void check(char q_c){
+
         if(clicked){
+
             word=Text.getText();
             bagOfChars.add('D');
             bagOfChars.add('O');
@@ -96,8 +106,10 @@ public class MainWindowController extends Observable {
             bagOfChars.add('B');
 
 
-            if(wordInBag(word)){
+            if(true){
                 protocol=text(id,y-1,x-1,h_v,q_c,word);
+                Boolean n= h_v=='V';
+                Word w=new Word(get(word),y-1,x-1,n);
                 vm.request=protocol;
                 setChanged();
                 notifyObservers(IP + " " + PORT);
@@ -105,8 +117,9 @@ public class MainWindowController extends Observable {
                 serRes.setText((statusMessage).getValue());
 
                 scoreText.setText(String.valueOf(score.getValue()));
+                b=Board.getBoard();
                 updateBoard(b);
-                bagRemove(word);
+                //bagRemove(word);
             }
             else {
                 serRes.setText("Not From Bag");
@@ -150,7 +163,6 @@ public class MainWindowController extends Observable {
                 Button but=buttons[i][j];
                 if(b1.getTiles()[i][j]!=null){
                     but.setText(String.valueOf(b1.getTiles()[i][j].letter));
-
                 }
 
             }
@@ -209,6 +221,8 @@ public class MainWindowController extends Observable {
 
     public void clicked(ActionEvent actionEvent) {
         saveButtons();
+        b=Board.getBoard();
+        updateBoard(b);
         Button but=(Button) actionEvent.getSource();
         int col= myGrid.getColumnIndex(but);
         int row= myGrid.getRowIndex(but);

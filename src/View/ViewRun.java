@@ -38,21 +38,21 @@ public class ViewRun extends Application {
 
 
 
-            FXMLLoader fxl1= new FXMLLoader();
-            BorderPane root1= fxl1.load(getClass().getResource("MainWindow.fxml").openStream());
-
-            MainWindowController wc1=fxl1.getController();
-
-
-            wc1.init(vm);
-            vm.setView(wc1);
-
-            Stage stage1=new Stage();
-
-            Scene scene1=new Scene(root1,1200,900);
-            scene1.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-            stage1.setScene(scene1);
-            stage1.show();
+//            FXMLLoader fxl1= new FXMLLoader();
+//            BorderPane root1= fxl1.load(getClass().getResource("MainWindow.fxml").openStream());
+//
+//            MainWindowController wc1=fxl1.getController();
+//
+//
+//            wc1.init(vm);
+//
+//
+//            Stage stage1=new Stage();
+//
+//            Scene scene1=new Scene(root1,1200,900);
+//            scene1.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+//            stage1.setScene(scene1);
+//            stage1.show();
 
         }catch (Exception e){ e.printStackTrace();}
 
