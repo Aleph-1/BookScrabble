@@ -79,29 +79,58 @@ public class MainWindowController extends Observable {
     }
 
 
-
     public void queryButton(){
+        check('Q');
+    }
+    public void challengeButton(){
+        check('C');
+    }
+
+    public void check(char q_c){
         if(clicked){
             word=Text.getText();
-            protocol=text(id,y-1,x-1,h_v,'C',word);
-            Boolean n=h_v=='V';
-            Word w=new Word(get(word),y-1,x-1,n);
-            vm.request=protocol;
-            setChanged();
-            notifyObservers(IP + " " + PORT);
-            System.out.println(protocol); //For testing reasons.
-            serRes.setText((statusMessage).getValue());
-            if(!Objects.equals(scoreText.getText(), "")){
-                int sum=Integer.parseInt(scoreText.getText());
-                sum+=score.getValue();
-                scoreText.setText(String.valueOf(sum));
-            }
-            else
+            bagOfChars.add('D');
+            bagOfChars.add('O');
+            bagOfChars.add('G');
+            bagOfChars.add('M');
+            bagOfChars.add('B');
+
+
+            if(wordInBag(word)){
+                protocol=text(id,y-1,x-1,h_v,q_c,word);
+                vm.request=protocol;
+                setChanged();
+                notifyObservers(IP + " " + PORT);
+                System.out.println(protocol); //For testing reasons.
+                serRes.setText((statusMessage).getValue());
+
                 scoreText.setText(String.valueOf(score.getValue()));
-            updateBoard(b);
+                updateBoard(b);
+                bagRemove(word);
+            }
+            else {
+                serRes.setText("Not From Bag");
+            }
+
 
         }
 
+    }
+    public Boolean wordInBag(String w){
+        for(int i=0;i<w.length();i++)
+            if(!bagOfChars.contains(w.charAt(i)))
+                return false;
+        return true;
+    }
+
+    public void bagRemove(String w){
+        ArrayList<Character> bag1=new ArrayList<>();
+        for(int i=0;i<w.length();i++)
+            if(!bagOfChars.contains(w.charAt(i))&&w.charAt(i)!=' ')
+                bag1.add(w.charAt(i));
+        bagOfChars.clear();
+        bagOfChars=bag1;
+        draw();
     }
 
 
@@ -151,6 +180,9 @@ public class MainWindowController extends Observable {
         StringBuilder str=new StringBuilder();
         for(char c:bagOfChars){
             str.append(c+",");
+            if(str.length()%17==0)
+                str.append("\n");
+
         }
         String s=str.toString();
         area.setText(s);

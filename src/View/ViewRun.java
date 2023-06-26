@@ -41,7 +41,7 @@ public class ViewRun extends Application {
             FXMLLoader fxl1= new FXMLLoader();
             BorderPane root1= fxl1.load(getClass().getResource("MainWindow.fxml").openStream());
 
-            MainWindowController wc1=fxl.getController();
+            MainWindowController wc1=fxl1.getController();
 
 
             wc1.init(vm);

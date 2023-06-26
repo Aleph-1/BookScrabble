@@ -390,12 +390,14 @@ int score = 0;
                 return 0;
 
         }
-
-        for (Word word : words){
-            if(!isOnOrNear(word))
-                words.remove(word);
-
-        }
+        if(words.size()==1)
+            if(!isOnOrNear(words.get(0)))
+                words.remove(words.get(0));
+        else
+            for (Word word : words){
+                if(!isOnOrNear(word))
+                    words.remove(word);
+            }
 
 
         for(Word word : words){
