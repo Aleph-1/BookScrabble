@@ -20,10 +20,10 @@ public class ViewRun extends Application {
         try{
 
             FXMLLoader fxl= new FXMLLoader();
-            BorderPane root= fxl.load(getClass().getResource("MainWindow.fxml").openStream());
+            BorderPane root= fxl.load(getClass().getResource("MainWindow.fxml").openStream());//Loading the fxml
             Model m=new Model();
-            m.startHost(8085);
-            MainWindowController wc=fxl.getController();
+            m.startHost(8085);//Starting the model
+            MainWindowController wc=fxl.getController();//Establishing wc as the controller
             ViewModel vm=new ViewModel(m);
             m.setViewModel(vm);
             wc.init(vm);
@@ -31,28 +31,13 @@ public class ViewRun extends Application {
 
 
 
-            Scene scene=new Scene(root,1200,900);
+            Scene scene=new Scene(root,1200,900);//Creating the size of the screen
             scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
             stage.setScene(scene);
-            stage.show();
+            stage.show();//Showing the screen
 
 
 
-//            FXMLLoader fxl1= new FXMLLoader();
-//            BorderPane root1= fxl1.load(getClass().getResource("MainWindow.fxml").openStream());
-//
-//            MainWindowController wc1=fxl1.getController();
-//
-//
-//            wc1.init(vm);
-//
-//
-//            Stage stage1=new Stage();
-//
-//            Scene scene1=new Scene(root1,1200,900);
-//            scene1.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-//            stage1.setScene(scene1);
-//            stage1.show();
 
         }catch (Exception e){ e.printStackTrace();}
 

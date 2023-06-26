@@ -18,7 +18,7 @@ public class threadedServer extends MyServer {
     }
 
 
-    public void start(){
+    public void start(){//Start function
         stop=false;
         new Thread(()->startLogic()).start();
     }

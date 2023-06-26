@@ -27,13 +27,13 @@ public class ViewModel implements Observer {
     public Board board = Board.getBoard();
 
 
-    public void setView(View.MainWindowController v){
+    public void setView(View.MainWindowController v){//Connecting the view and the view model
         this.v = v;
         this.v.score.bind(score);
         this.v.statusMessage.bind(statusMessage);
     }
 
-    public ViewModel(Model m) {
+    public ViewModel(Model m) {//Constructor
         this.m = m;
         score = new SimpleIntegerProperty();
         response = new SimpleStringProperty();
@@ -43,23 +43,23 @@ public class ViewModel implements Observer {
 
 
     @Override
-    public void update(Observable o, Object arg) {
+    public void update(Observable o, Object arg) {//Works on notify
 
         if (o == m) {
 
 
-            if (response.getValue().compareTo("-1") == 0)
+            if (response.getValue().compareTo("-1") == 0)//Means the word isn't correct
                 statusMessage.set("Invalid word try again!");
             else {
-                if (response.getValue().compareTo("3")==0)
+                if (response.getValue().compareTo("3")==0)//Means it's not the players turn
                     statusMessage.set("Not Your Turn!");
                 else {
-                    statusMessage.set("Word Approved!");
-                    String[] data = response.getValue().replace("[", "").replace("]", "").split(",");
-                    Word w = new Word(get(data[3]), Integer.parseInt(data[0].trim()), Integer.parseInt(data[1]), data[2].compareTo("true") == 0);
-                    v.score.bind(score);
-                    board.tryPlaceWord(w);
-                    v.updateBoard(board);
+                    statusMessage.set("Word Approved!");//Word is approved by the server
+                    String[] data = response.getValue().replace("[", "").replace("]", "").split(",");//Collecting the data
+                    Word w = new Word(get(data[3]), Integer.parseInt(data[0].trim()), Integer.parseInt(data[1]), data[2].compareTo("true") == 0);//Creating the wanted word
+                    v.score.bind(score);//Binding view score to view model score
+                    board.tryPlaceWord(w);//Placing the word on the board
+                    v.updateBoard(board);//Updating the board
                 }
             }
         }
@@ -74,7 +74,7 @@ public class ViewModel implements Observer {
 
     }
 
-    public static Tile[] get(String s) {
+    public static Tile[] get(String s) {// Function that creating a word from string
         Tile[] ts = new Tile[s.length()];
         int i = 0;
         for (char c : s.toCharArray()) {
