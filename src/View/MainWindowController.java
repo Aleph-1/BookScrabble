@@ -2,70 +2,150 @@ package View;
 
 import Model.MileStone3.test.Board;
 import Model.MileStone3.test.Tile;
+import Model.MileStone3.test.Word;
 import Model.Model;
 import ViewModel.ViewModel;
 import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.io.Console;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Observable;
+import java.util.*;
 
 public class MainWindowController extends Observable {
     @FXML
-    GridPane myGrid;
+    public GridPane myGrid;
     @FXML
-    TextField Text;
+    public TextField Text;
+
+    @FXML
+    public TextArea area;
+
+    @FXML
+    public TextArea serRes;
+
+    @FXML
+    public TextArea scoreText;
+    @FXML
+    public  TextArea userName;
+
+    public void idApply(){// Applying the user's id
+        b=Board.getBoard();
+        id= Integer.parseInt(userName.getText());
+        updateBoard(b);
+    }
+
     char h_v;
     int id;
     int x,y;
     String word;
-    ViewModel vm;
+    ArrayList<Character> bagOfChars=new ArrayList<>();
+
+    ViewModel vm=new ViewModel(new Model());
     String IP = "localhost";
-    int PORT = 8080;
+    int PORT = 8085;
     Board b = Board.getBoard();
-    public IntegerProperty score;
-    public StringProperty statusMessage;
+    Tile.Bag bag= Tile.Bag.getBag();
+    public IntegerProperty score=new SimpleIntegerProperty();
+    public StringProperty statusMessage=new SimpleStringProperty();
+
+
     String protocol;
-    Button[][] buttons=new Button[15][15];
+    public Button[][] buttons=new Button[15][15];
 
 
     boolean clicked=false;
     Map<Button,String> styleMap;
 
-    MainWindowController(ViewModel vm){
-        this.vm = vm;
+
+
+
+    public void init(ViewModel vm){//Initiating the view
+        this.vm=vm;
         this.addObserver(vm);
+        score = new SimpleIntegerProperty();
+        statusMessage = new SimpleStringProperty();
+        score.set(0);
+        statusMessage.set("");
     }
 
-    public static String text(int id,int x, int y, char v_or_h,char q_or_c,String word){
+
+
+
+    public static String text(int id,int x, int y, char v_or_h,char q_or_c,String word){//A function that creates the protocol we created
         return id+" ["+x+","+y+","+v_or_h+"]"+" "+q_or_c+",bee.txt,"+word;
     }
 
 
     public void queryButton(){
+        check('Q');
+    }//On query Button click
+    public void challengeButton(){
+        check('C');
+    }//On challenge Button click
+
+    public void check(char q_c){//The function that sends the request to the vm
+
         if(clicked){
-            word=Text.getText();
-            protocol=text(id,x,y,h_v,'Q',word);
-            vm.request=protocol;
-            setChanged();
-            notifyObservers(IP + " " + PORT);
-            System.out.println(protocol); //For testing reasons.
+
+            word=Text.getText();//Getting the text from the text box
+
+            if(wordInBag(word)){//Checking if you can create the word from the bag
+                protocol=text(id,y-1,x-1,h_v,q_c,word);//creating the protocol
+                Boolean n= h_v=='V';
+//                Word w=new Word(get(word),y-1,x-1,n);
+                vm.request=protocol;
+                setChanged();
+                notifyObservers(IP + " " + PORT);//Notifying the observers
+                System.out.println(protocol); //For testing reasons.
+                serRes.setText((statusMessage).getValue());//Showing the server response on the screen
+                scoreText.setText(String.valueOf(score.getValue()));//Updating the score;
+                b=Board.getBoard();
+                updateBoard(b);//Updating the board on view
+                if(!statusMessage.getValue().equals("Invalid word try again!")){
+                    bagRemove(word);//Removing the letters from the bag
+                }
+            }
+            else {
+                serRes.setText("Not From Bag");
+            }
+
+
         }
 
     }
+    public Boolean wordInBag(String w){//Checking if a certain word can be created by the bag chars
+        for(int i=0;i<w.length();i++)
+            if(!bagOfChars.contains(w.charAt(i)))
+                return false;
+        return true;
+    }
+
+    public void bagRemove(String w){//Removing the letters of a certain word from the bag
+        ArrayList<Character> bag1=new ArrayList<>();
+        for(int i=0;i<w.length();i++)
+            if(!bagOfChars.contains(w.charAt(i))&&w.charAt(i)!=' '){
+                bag1.add(w.charAt(i));
+                i++;
+            }
+
+        bagOfChars.clear();
+        bagOfChars=bag1;
+        draw();
+    }
 
 
-    public void saveStyles(){
+    public void saveStyles(){//Saving the style of all the buttons
         styleMap=new HashMap<>();
         for(Node but:myGrid.getChildren()){
             if(but instanceof Button){
@@ -74,14 +154,52 @@ public class MainWindowController extends Observable {
         }
     }
 
-    public void setViewModel(ViewModel vm){
+    public void updateBoard(Board b1){//Updating the view based on the board
+        saveButtons();
+        for(int i=0;i<15;i++){
+            for(int j=0;j<15;j++){
+                Button but=buttons[i][j];
+                if(b1.getTiles()[i][j]!=null){
+                    but.setText(String.valueOf(b1.getTiles()[i][j].letter));
+                }
 
+            }
+        }
+    }
 
+    public void draw(){//Drawing a card from the bag
+        int s=0;
+        while(bagOfChars.size()<6){
+            Tile c= bag.getRand();
+            if(c!=null) {
+                bagOfChars.add(c.letter);
+            }
+        }
+        while(s!=1){
+            Tile c=bag.getRand();
+            if(c!=null) {
+                bagOfChars.add(c.letter);
+                s++;
+            }
+        }
 
+        displayBag();
+    }
+
+    public void displayBag(){// Displaying all the chars from the bag in view
+        StringBuilder str=new StringBuilder();
+        for(char c:bagOfChars){
+            str.append(c+",");
+            if(str.length()%17==0&&str.length()!=0)
+                str.append("\n");
+
+        }
+        String s=str.toString();
+        area.setText(s);
     }
 
 
-    public void saveButtons(){
+    public void saveButtons(){//Collecting all the buttons once to an array
         for(Node but:myGrid.getChildren()){
             if(but instanceof Button){
                 buttons[myGrid.getRowIndex(but)-1][myGrid.getColumnIndex(but)-1]= (Button) but;
@@ -89,34 +207,42 @@ public class MainWindowController extends Observable {
         }
     }
 
-    public void clicked(ActionEvent actionEvent) {
+    public void clicked(ActionEvent actionEvent) {//Happens on click of a button
         saveButtons();
-        Button but=(Button) actionEvent.getSource();
+        b=Board.getBoard();
+        updateBoard(b);
+        Button but=(Button) actionEvent.getSource();//takes the initiating button
         int col= myGrid.getColumnIndex(but);
         int row= myGrid.getRowIndex(but);
         x=col;
         y=row;
-        Button right = buttons[row-1][col];
+        if(col==15)
+            h_v='V';
+        else{
+            Button right = buttons[row-1][col];//taking the button to the right
+            if((!right.getStyle().contains("-fx-border-color: #00ff00;")&&col!=15)||row==15){//checking if the button to the right is colored so it can change whether its horizontal or vertical
+                h_v='H';
+            }
+            else{
+                h_v='V';
+            }
+        }
+
         if(!clicked)
             saveStyles();
-        if((!right.getStyle().contains("-fx-border-color: #00ff00;")&&col!=15)||row==15){
-            h_v='H';
-        }
-        else{
-            h_v='V';
-        }
-        for(Node but1:myGrid.getChildren()){
+
+        for(Node but1:myGrid.getChildren()){//Resetting the board
             if(but1 instanceof Button){
                 but1.setStyle(styleMap.get(but1));
             }
         }
-        if(h_v=='H'){
+        if(h_v=='H'){//Coloring all the horizontal buttons
             for(int i=col;i<16;i++){
                 Button n=buttons[row-1][i-1];
                 n.setStyle("-fx-border-color: #00ff00;");
             }
         }
-        else{
+        else{//Coloring all the vertical buttons
             for(int i=row;i<16;i++){
                 Button n=buttons[i-1][col-1];
                 n.setStyle("-fx-border-color: #00ff00;");
@@ -129,17 +255,7 @@ public class MainWindowController extends Observable {
         clicked=true;
     }
 
-    Button getButtonByLocation(int row,int col){
-        Button l=new Button();
-        for(Node but:myGrid.getChildren()){
-            if(but instanceof Button){
-                if((myGrid.getRowIndex(but)==row)&&(myGrid.getColumnIndex(but)==col)){
-                    return (Button) but;
-                }
-            }
-        }
-        return l;
-    }
+
 
 
 }

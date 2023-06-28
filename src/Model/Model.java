@@ -19,8 +19,11 @@ public class Model extends Observable {
     ViewModel vm;
     hostServer hs = new hostServer();
 
-    Model(ViewModel vm){
+
+    public  void setViewModel(ViewModel vm){
         this.vm = vm;
+        this.addObserver(vm);
+
     }
 
     public void startHost(int port) {
@@ -46,17 +49,22 @@ public class Model extends Observable {
 
         vm.response.bind(returnString);
 
-        while (response.compareTo("-1") == 0) { //The first index means the type of event
+        if (response.compareTo("-1") == 0) { //The first index means the type of event
             returnString.set("-1");
             setChanged();
             notifyObservers();
         }
 
-        if (response.compareTo("1") == 0) { // If your word got accepted, 2 will happen to you as well
+        if (response.split(" ")[0].compareTo("1") == 0) { // If your word got accepted, 2 will happen to you as well
+            response=in.next();
             vm.score.bind(score);
-            score.add(Integer.parseInt(in.next()));
+            score.set(Integer.parseInt(response)+score.getValue());
+
             in.next(); //Update Board Protocol
             returnString.set(in.nextLine());
+            setChanged();
+            notifyObservers();
+
         }
 
 
