@@ -109,11 +109,12 @@ public class MainWindowController extends Observable {
                 notifyObservers(IP + " " + PORT);//Notifying the observers
                 System.out.println(protocol); //For testing reasons.
                 serRes.setText((statusMessage).getValue());//Showing the server response on the screen
-
                 scoreText.setText(String.valueOf(score.getValue()));//Updating the score;
                 b=Board.getBoard();
                 updateBoard(b);//Updating the board on view
-                bagRemove(word);//Removing the letters from the bag
+                if(!statusMessage.getValue().equals("Invalid word try again!")){
+                    bagRemove(word);//Removing the letters from the bag
+                }
             }
             else {
                 serRes.setText("Not From Bag");
@@ -133,8 +134,11 @@ public class MainWindowController extends Observable {
     public void bagRemove(String w){//Removing the letters of a certain word from the bag
         ArrayList<Character> bag1=new ArrayList<>();
         for(int i=0;i<w.length();i++)
-            if(!bagOfChars.contains(w.charAt(i))&&w.charAt(i)!=' ')
+            if(!bagOfChars.contains(w.charAt(i))&&w.charAt(i)!=' '){
                 bag1.add(w.charAt(i));
+                i++;
+            }
+
         bagOfChars.clear();
         bagOfChars=bag1;
         draw();
