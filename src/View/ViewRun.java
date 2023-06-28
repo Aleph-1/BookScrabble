@@ -1,14 +1,13 @@
 package View;
 
 import Model.Model;
+
+import ViewModel.ViewModel;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-
-import java.awt.*;
 
 public class ViewRun extends Application {
 
@@ -19,12 +18,30 @@ public class ViewRun extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         try{
-            BorderPane root= (BorderPane) FXMLLoader.load(MainWindowController.class.getResource("MainWindow.fxml"));
-            Scene scene=new Scene(root,1200,900);
+
+            FXMLLoader fxl= new FXMLLoader();
+            BorderPane root= fxl.load(getClass().getResource("MainWindow.fxml").openStream());//Loading the fxml
+            Model m=new Model();
+            m.startHost(8085);//Starting the model
+            MainWindowController wc=fxl.getController();//Establishing wc as the controller
+            ViewModel vm=new ViewModel(m);
+            m.setViewModel(vm);
+            wc.init(vm);
+            vm.setView(wc);
+
+
+
+            Scene scene=new Scene(root,1200,900);//Creating the size of the screen
             scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
             stage.setScene(scene);
-            stage.show();
+            stage.show();//Showing the screen
+
+
+
+
         }catch (Exception e){ e.printStackTrace();}
+
+    }
 
 //        StackPane layout= new StackPane();
 //
@@ -35,4 +52,3 @@ public class ViewRun extends Application {
 //        stage.setTitle("JavaFX 19");
 //        stage.show();
     }
-}

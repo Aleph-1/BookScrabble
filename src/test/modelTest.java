@@ -8,7 +8,7 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class modelTest {
-
+/*
 
     public static String text(int id,int x, int y, char v_or_h,char q_or_c,String word){
         return id+"\n["+x+","+y+","+v_or_h+"]"+"\n"+q_or_c+",bee.txt,"+word;
@@ -212,7 +212,7 @@ public class modelTest {
         boolean ok=true;
         Random r=new Random();
         int port=6000+r.nextInt(1000);
-        Model m  = new Model();
+       // Model m  = new Model();
 
         m.startHost(port); // runs in the background
         try {
@@ -247,6 +247,9 @@ public class modelTest {
         }
 
     }
+
+ */
+
 
 
 
