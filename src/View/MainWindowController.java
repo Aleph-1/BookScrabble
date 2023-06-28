@@ -49,12 +49,12 @@ public class MainWindowController extends Observable {
     int id;
     int x,y;
     String word;
-    ArrayList<Character> bagOfChars=new ArrayList<>();
+    public ArrayList<Character> bagOfChars=new ArrayList<>();
 
     ViewModel vm=new ViewModel(new Model());
     String IP = "localhost";
     int PORT = 8085;
-    Board b = Board.getBoard();
+    public Board b = Board.getBoard();
     Tile.Bag bag= Tile.Bag.getBag();
     public IntegerProperty score=new SimpleIntegerProperty();
     public StringProperty statusMessage=new SimpleStringProperty();
