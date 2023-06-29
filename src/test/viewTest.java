@@ -283,7 +283,7 @@ public class viewTest extends MainWindowController{
         Text.setText("BOMB");
         buttons[7][7].fireEvent(new ActionEvent());
         queryButton();
-
+        System.out.println("Not in dictionary so shouldn't work");
 
         if(protocol.compareTo("0 [7,7,H] Q,bee.txt,BOMB")!=0){
             System.out.println("Wrong server response! (-50)");
@@ -301,6 +301,7 @@ public class viewTest extends MainWindowController{
         Text.setText("DOG");
         buttons[7][7].fireEvent(new ActionEvent());
         queryButton();
+         System.out.println("Should work");
 
         if(protocol.compareTo("0 [7,7,V] Q,bee.txt,DOG")!=0){
             System.out.println("Wrong server response! (-50)");
