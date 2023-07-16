@@ -7,6 +7,7 @@
  
  GANTT
  Maor Saban & Ido Abramovich
+ 
  Scrum Master
  Alon Michaeli
  
