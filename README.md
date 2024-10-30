@@ -5,9 +5,6 @@
  Model + View + Testing + ViewModel
  Alon Michaeli & Ido Shimon
  
- GANTT
- Maor Saban & Ido Abramovich
- 
  Scrum Master
  Alon Michaeli
  
